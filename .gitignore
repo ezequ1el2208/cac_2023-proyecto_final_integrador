@@ -1,2 +1,6 @@
 # ignore venv
 cac2023venv/
+
+# ingorar sqlite y pycache
+*.sqlite3
+__pycache__/
