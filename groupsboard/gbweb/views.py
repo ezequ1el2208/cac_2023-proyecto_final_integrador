@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse
 
+from .forms import CreateUserForm
+from .forms import CreateGroupForm
+
+
 def index(request):
     # print(reverse('index'))
     # print(request.method)
@@ -23,7 +27,15 @@ def index(request):
     return render(request, 'gbweb/index.html', context)
 
 def create_user(request):
-    return render(request, 'gbweb/create_user.html')
+    if request.method == "POST":
+        # POST
+        create_user_form = CreateUserForm(request.POST)
+    else:
+        # GET
+        create_user_form = CreateUserForm()
+
+    context = {'form': create_user_form}
+    return render(request, 'gbweb/create_user.html', context)
 
 def userprofile(request):
     # Esta es una lista de usuarios simulados
@@ -43,7 +55,15 @@ def userprofile(request):
     return render(request, 'gbweb/userprofile.html', context)
 
 def create_group(request):
-    return render(request, 'gbweb/create_group.html')
+    if request.method == "POST":
+        # POST
+        create_group_form = CreateGroupForm(request.POST)
+    else:
+        # GET
+        create_group_form = CreateGroupForm()
+
+    context = {'form': create_group_form}
+    return render(request, 'gbweb/create_group.html', context)
 
 def group(request):
     return render(request, 'gbweb/group.html')

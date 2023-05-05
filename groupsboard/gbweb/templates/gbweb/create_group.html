@@ -1,0 +1,17 @@
+{% extends 'gbweb/base.html' %}
+{% load static %}
+{{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'gbweb/css/create_user.css' %}">
+
+{% endblock %}}
+{% load crispy_forms_tags %}
+
+{% block title %}Group Boards - Crear Grupo{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+{% crispy form %}
+
+{% endblock %}
