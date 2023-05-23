@@ -78,8 +78,13 @@ WSGI_APPLICATION = 'groupsboard.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gbweb',
+        'USER': 'postgres',
+        'PASSWORD': 'root1234',
+        # localhost en caso de tenerlo en local y la URL de la base de datos en caso de tenerlo en algún servicio en la nube
+        'HOST': '127.0.0.1',
+        'PORT': '5432'  # Si usas el puerto default no pongas esta línea y si lo has cambiado especifícaselo aquí
     }
 }
 
