@@ -1,0 +1,15 @@
+{% extends 'gbweb/base.html' %}
+{% block title %}Groups{% endblock %}
+
+{% block content %}
+<h1>Groups</h1>
+{% for group in groups %}
+
+<article>
+    <a href="{% url 'grouplist' group.id %}">
+        <h1>{{group.groupname}}</h1> 
+    </a>
+</article>
+    
+{% endfor %}
+{% endblock %}

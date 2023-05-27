@@ -1,14 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
-from django.urls import reverse
-
+from django.shortcuts import render, redirect, get_object_or_404
+from . models import Grupo, Tarea
 from .forms import CreateUserForm
 from .forms import CreateGroupForm
 
 
 def index(request):
-    # print(reverse('index'))
-    # print(request.method)
 
     # Esta es una lista de usuarios simulados
 
@@ -54,22 +50,29 @@ def userprofile(request):
 
     return render(request, 'gbweb/userprofile.html', context)
 
-def create_group(request):
-    if request.method == "POST":
-        # POST
-        create_group_form = CreateGroupForm(request.POST)
-    else:
-        # GET
-        create_group_form = CreateGroupForm()
-
-    context = {'form': create_group_form}
-    return render(request, 'gbweb/create_group.html', context)
-
 def group(request):
-    return render(request, 'gbweb/group.html')
+    groups = Grupo.objects.all()
+    return render(request, 'gbweb/groups.html',{
+        'groups': groups
+    })
 
-def grouplist(request):
-    return render(request, 'gbweb/grouplist.html')
+def create_group(request):
+    if request.method == 'GET':
+        return render(request, 'gbweb/create_group.html', {
+            'form': CreateGroupForm()
+        })
+    else: 
+        Grupo.objects.create(groupname=request.POST["groupname"], grouptype=request.POST["grouptype"], grouptheme=request.POST["grouptheme"], groupdescription=request.POST["groupdescription"],
+        next_meeting=request.POST["next_meeting"])
+        return redirect('groups')
+    
+def grouplist(request, id):
+    groups = get_object_or_404(Grupo, id=id)
+    tareas = Tarea.objects.filter(grupo_id = id)
+    return render(request, 'gbweb/grouplist.html',{
+        'groups': groups,
+        'tareas': tareas
+    })
 
 
 
