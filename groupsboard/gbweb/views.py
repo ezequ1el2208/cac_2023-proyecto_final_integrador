@@ -5,22 +5,7 @@ from .forms import CreateGroupForm
 
 
 def index(request):
-
-    # Esta es una lista de usuarios simulados
-
-    user_list = [
-        {'display_name': 'Carlos', 'id': '1', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '25', 'joined': False},
-        {'display_name': 'Juan', 'id': '2', 'age': '40', 'joined': True, 'groups': [1,2,3]},
-        {'display_name': 'Maria', 'id': '3', 'age': '38', 'joined': True, 'groups': [1,2,3]},
-        {'display_name': 'Laura', 'id': '4', 'age': '22', 'joined': True, 'groups': [1,2,3]},
-        {'display_name': 'Pedro', 'id': '5', 'age': '45', 'joined': True, 'groups': [1,2,3]},
-    ]
-
-    context = {
-        'simulated_users': user_list[0],
-    }
-
-    return render(request, 'gbweb/index.html', context)
+    return render(request, 'index.html')
 
 def create_user(request):
     if request.method == "POST":
@@ -31,7 +16,7 @@ def create_user(request):
         create_user_form = CreateUserForm()
 
     context = {'form': create_user_form}
-    return render(request, 'gbweb/create_user.html', context)
+    return render(request, 'users/create_user.html', context)
 
 def userprofile(request):
     # Esta es una lista de usuarios simulados
@@ -45,20 +30,21 @@ def userprofile(request):
     ]
 
     context = {
-        'simulated_users': user_list[2],
+        'simulated_users': user_list[1],
     }
 
-    return render(request, 'gbweb/userprofile.html', context)
+    return render(request, 'users/userprofile.html', context)
+
 
 def group(request):
     groups = Grupo.objects.all()
-    return render(request, 'gbweb/groups.html',{
+    return render(request, 'groups/groups.html',{
         'groups': groups
     })
 
 def create_group(request):
     if request.method == 'GET':
-        return render(request, 'gbweb/create_group.html', {
+        return render(request, 'groups/create_group.html', {
             'form': CreateGroupForm()
         })
     else: 
@@ -69,11 +55,18 @@ def create_group(request):
 def grouplist(request, id):
     groups = get_object_or_404(Grupo, id=id)
     tareas = Tarea.objects.filter(grupo_id = id)
-    return render(request, 'gbweb/grouplist.html',{
+    return render(request, 'groups/grouplist.html',{
         'groups': groups,
         'tareas': tareas
     })
 
+def about(request):
+    return render(request, 'about.html')
 
+def sing_up(request):
+    return render(request, 'sing_up.html')
+
+def sing_in(request):
+    return render(request, 'sing_in.html')
 
 

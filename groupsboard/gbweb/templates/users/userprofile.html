@@ -1,0 +1,29 @@
+{% extends 'layouts/base_con_login.html' %}
+
+{% block title %}Perfil de {{simulated_users.display_name}} {% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<section>
+  <div>
+    {{simulated_users.display_name}}
+    {{simulated_users.age}}
+    {{simulated_users.joined}}
+    {{simulated_users.groups}}
+  </div>
+</section>
+<section class="boards">
+  {% if not simulated_users.joined %}
+
+  <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="text-center">No tienes grupos!</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}
