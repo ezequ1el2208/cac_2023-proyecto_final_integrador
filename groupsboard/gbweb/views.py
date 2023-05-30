@@ -7,6 +7,15 @@ from .forms import CreateGroupForm
 def index(request):
     return render(request, 'index.html')
 
+def about(request):
+    return render(request, 'about.html')
+
+def sing_up(request):
+    return render(request, 'sing_up.html')
+
+def sing_in(request):
+    return render(request, 'sing_in.html')
+
 def create_user(request):
     if request.method == "POST":
         # POST
@@ -52,21 +61,21 @@ def create_group(request):
         next_meeting=request.POST["next_meeting"])
         return redirect('groups')
     
-def grouplist(request, id):
+def group_detail(request, id):
     groups = get_object_or_404(Grupo, id=id)
     tareas = Tarea.objects.filter(grupo_id = id)
-    return render(request, 'groups/grouplist.html',{
+    return render(request, 'groups/group_detail.html',{
         'groups': groups,
         'tareas': tareas
     })
 
-def about(request):
-    return render(request, 'about.html')
+def tasks(request):
+    tasks = Tarea.objects.all()
+    return render(request, 'tasks/tasks.html', {
+        'tasks' : tasks
+    })
 
-def sing_up(request):
-    return render(request, 'sing_up.html')
-
-def sing_in(request):
-    return render(request, 'sing_in.html')
+def create_task(request):
+    return render(request, 'tasks/create_task.html')
 
 

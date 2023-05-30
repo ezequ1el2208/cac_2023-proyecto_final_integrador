@@ -1,0 +1,23 @@
+{% extends 'layouts/base_con_login.html' %}
+
+{% block content %}
+<h1>Tasks</h1>
+
+{% for task in tasks %}
+<div>
+    {% if task.done == False %}
+    <p>Tarea pendiente</p>
+    {% else %}
+    <p>Tarea terminada</p>
+    {% endif %}
+
+    <p>{{task.description}}</p>
+    <p>Group: {{task.group.groupname}}</p>
+
+    <button>Delete</button>
+    
+    <button>Done</button>
+</div>
+{% endfor %}
+
+{% endblock  %}

@@ -29,7 +29,10 @@ class Estudiante(models.Model):
     cursos = models.ManyToManyField(Grupo)
 
 class Tarea(models.Model):
-    titulo = models.CharField(max_length=200)
-    descripcion = models.TextField(null=True, verbose_name='Descripcion')
-    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, verbose_name='Descripcion')
+    group = models.ForeignKey(Grupo, on_delete=models.CASCADE)
     done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title + ' - ' + self.group.groupname

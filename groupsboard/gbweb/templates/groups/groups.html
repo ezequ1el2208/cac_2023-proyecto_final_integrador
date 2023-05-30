@@ -6,7 +6,7 @@
 {% for group in groups %}
 
 <article>
-    <a href="{% url 'grouplist' group.id %}">
+    <a href="{% url 'group_detail' group.id %}">
         <h1>{{group.groupname}}</h1> 
     </a>
 </article>
