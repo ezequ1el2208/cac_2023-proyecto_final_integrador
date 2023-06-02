@@ -13,4 +13,5 @@ urlpatterns = [
     path('sing_in/', views.sing_in, name='sing_in'),
     path('create_task/', views.create_task, name='create_task'),
     path('tasks/', views.tasks, name='tasks'),
+    path('users/', views.ListarUsuarios.as_view(), name="users"),
 ]

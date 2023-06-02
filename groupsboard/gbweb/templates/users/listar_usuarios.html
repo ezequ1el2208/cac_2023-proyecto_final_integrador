@@ -1,0 +1,32 @@
+{% extends 'layouts/base_con_login.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gbweb/css/create_user.css' %}">
+{% endblock %}
+
+{% block title %}Listado de Usuarios{% endblock %}
+
+{% block header %}
+<h1>Groups Board</h1>
+<h2>Listado de Usuarios</h2>
+{% endblock %}
+
+{% block content %}
+
+<section class="lista">
+    {% for usuario in Usuarios %}
+        <article>
+            <p><b>Nombre</b>: {{usuario.email}}</p>
+            <p><b>Apellido</b>: {{usuario.apellido}}</p>
+            <p><b>Email</b>: {{usuario.email}}</p>
+            <p><b>DNI</b>: {{usuario.dni}}</p>
+            <p><b>Username</b>: {{usuario.username}}</p>
+            <p><b>Password</b>: {{usuario.password}}</p>
+        </article>
+    {% empty %}
+        <article>No hay Usuarios cargados</article>
+    {% endfor %}
+</section>
+
+{% endblock %}

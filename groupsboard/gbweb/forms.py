@@ -13,13 +13,14 @@ class CreateUserForm(forms.Form):
         self.helper.form_action = reverse_lazy('create_user')
         self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Crear usuario'))
-
-    email = forms.EmailField(label = "Correo electrónico", required=True)
-    showname = forms.CharField(label = "Nombre para mostrar", required=True, max_length=50)
-    username = forms.CharField(label = "Nombre de usuario", required=True, max_length=50)
-    password = forms.CharField(label = "Contraseña", required=True, max_length=50, widget=forms.PasswordInput)
-    profilepic = forms.ImageField(label = "Foto de perfil", required=False)
-
+    
+    nombre = forms.CharField(label = "Nombre:", required=True, max_length=100)
+    apellido = forms.CharField(label = "Apellido:", required=True, max_length=100)
+    email = forms.EmailField(label = "Email", required=True)
+    dni = forms.IntegerField(label = "DNI", required=True)
+    username = forms.CharField(label = "Nombre para mostrar", required=True, max_length=50)
+    password = forms.CharField(label = "Contraseña", max_length=50, widget=forms.PasswordInput)
+   
 class CreateGroupForm(forms.Form):
 
     def __init__(self, *args, **kwargs):

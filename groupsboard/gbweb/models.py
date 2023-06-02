@@ -14,6 +14,8 @@ class Persona(models.Model):
     apellido = models.CharField(max_length=100, verbose_name='Apellido:')
     email = models.EmailField(max_length=150, verbose_name='Email')
     dni = models.BigIntegerField(verbose_name='DNI:')
+    username = models.CharField(max_length=50, verbose_name="Nombre de usuario", null=True)
+    password = models.CharField(max_length=50, verbose_name="Contraseña", null=True)
 
 class Grupo(models.Model):
     groupname = models.CharField(max_length=200, verbose_name='Nombre del grupo:')

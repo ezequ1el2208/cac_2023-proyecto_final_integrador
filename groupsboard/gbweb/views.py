@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . models import Grupo, Tarea
+from . models import Grupo, Tarea, Persona
 from .forms import CreateUserForm
 from .forms import CreateGroupForm
+from django.views.generic.list import ListView
+from django.contrib import messages
 
 
 def index(request):
@@ -17,15 +19,41 @@ def sing_in(request):
     return render(request, 'sing_in.html')
 
 def create_user(request):
+    context = {}
     if request.method == "POST":
         # POST
         create_user_form = CreateUserForm(request.POST)
+        if create_user_form.is_valid():
+            nombre = create_user_form.cleaned_data["nombre"]
+            apellido = create_user_form.cleaned_data["apellido"]
+            email = create_user_form.cleaned_data["email"]
+            dni = create_user_form.cleaned_data["dni"]
+            username = create_user_form.cleaned_data["username"]
+            password = create_user_form.cleaned_data["password"]
+
+            usuario_nuevo = Persona(
+                nombre = nombre,
+                apellido = apellido,
+                email = email,
+                dni = dni,
+                username = username,
+                password = password,
+            )
+            usuario_nuevo.save()
+            
+            messages.add_message(request, messages.SUCCESS, 'Usuario creado con éxito')
+            return redirect("users")
     else:
         # GET
         create_user_form = CreateUserForm()
-
     context = {'form': create_user_form}
     return render(request, 'users/create_user.html', context)
+
+class ListarUsuarios(ListView):
+    model = Persona
+    context_object_name = 'Usuarios'
+    template_name = 'users/listar_usuarios.html'
+    ordering = ['apellido']
 
 def userprofile(request):
     # Esta es una lista de usuarios simulados
@@ -63,7 +91,7 @@ def create_group(request):
     
 def group_detail(request, id):
     groups = get_object_or_404(Grupo, id=id)
-    tareas = Tarea.objects.filter(grupo_id = id)
+    tareas = Tarea.objects.filter(group_id = id)
     return render(request, 'groups/group_detail.html',{
         'groups': groups,
         'tareas': tareas
