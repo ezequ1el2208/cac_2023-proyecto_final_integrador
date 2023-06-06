@@ -7,7 +7,7 @@ from .forms import CreateGroupForm
 
 
 
-from . models import Grupo, Tarea, Persona
+from . models import Grupo, Tarea, Persona, Estudiante
 
 
 
@@ -22,6 +22,19 @@ def sing_up(request):
 
 def sing_in(request):
     return render(request, 'sing_in.html')
+
+def home(request): 
+    tasks = Tarea.objects.all()
+    groups = Grupo.objects.all()
+    students = Estudiante.objects.all()
+
+    total_groups = groups.count()
+    total_tasks = tasks.count()
+
+    context = {'tasks':tasks, 'groups':groups, 'students': students, 'total_groups':total_groups, 'total_tasks': total_tasks}
+
+    return render(request, 'dashboard/dashboard.html', context)
+    
 
 def create_user(request):
     context = {}
@@ -104,9 +117,8 @@ def group_detail(request, id):
 
 def tasks(request):
     tasks = Tarea.objects.all()
-    return render(request, 'tasks/tasks.html', {
-        'tasks' : tasks
-    })
+    context = {'tasks' : tasks}
+    return render(request, 'tasks/tasks.html', context)
 
 def create_task(request):
     group = Grupo.objects.all()

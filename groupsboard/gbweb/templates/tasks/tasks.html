@@ -11,12 +11,13 @@
     <p>Tarea terminada</p>
     {% endif %}
 
-    <p>{{task.description}}</p>
-    <p>Group: {{task.group.groupname}}</p>
+    <h5>{{task.description}}</h5>
+    <h5>Group: {{task.group.groupname}}</h5>
 
     <button>Delete</button>
     
     <button>Done</button>
+    <hr>
 </div>
 {% endfor %}
 
