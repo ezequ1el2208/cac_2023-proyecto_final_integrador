@@ -1,24 +1,15 @@
 '''
 Models classes
 '''
+from django.contrib.auth.models import User
 from django.db import models
+
 
 # Create your models here.
 options_type=(
     (1,'Público'),
     (2,'Privado')
     )
-
-class Persona(models.Model):
-    nombre = models.CharField(max_length=100, verbose_name='Nombre:')
-    apellido = models.CharField(max_length=100, verbose_name='Apellido:')
-    email = models.EmailField(max_length=150, verbose_name='Email')
-    dni = models.BigIntegerField(verbose_name='DNI:')
-    username = models.CharField(max_length=50, verbose_name="Nombre de usuario", null=True)
-    password = models.CharField(max_length=50, verbose_name="Contraseña", null=True)
-
-    def __str__(self):
-        return self.nombre
 
 class Grupo(models.Model):
     groupname = models.CharField(max_length=200, verbose_name='Nombre del grupo:')
@@ -31,20 +22,20 @@ class Grupo(models.Model):
         return self.groupname
 
 class Estudiante(models.Model):
-    persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
+    persona = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=100, verbose_name='Legajo')
     cursos = models.ManyToManyField(Grupo)
 
     def __str__(self):
-        return self.persona.nombre
+        return self.persona.username
     
 class Instructor(models.Model):
-    persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
+    persona = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=100, verbose_name='Legajo')
     cursos = models.ManyToManyField(Grupo)
 
     def __str__(self):
-        return self.persona.nombre
+        return self.persona.username
     
 class Tarea(models.Model):
     title = models.CharField(max_length=200)

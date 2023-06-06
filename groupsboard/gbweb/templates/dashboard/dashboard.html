@@ -14,14 +14,12 @@
                 <tr>
                     <th></th>
                     <th>Student</th>
-                    <th>ID</th>
                     <th>email</th>
                 </tr>
                 {% for student in students %}
                 <tr>
                     <td><a class="btn btn-sm btn-info" href="">view</a></td>
-                    <td>{{student.persona.nombre}}</td>
-                    <td>{{student.persona.dni}}</td>
+                    <td>{{student.persona.username}}</td>
                     <td>{{student.persona.email}}</td>
                 </tr>
                 {% endfor %}

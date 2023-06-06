@@ -7,7 +7,7 @@ from .forms import CreateGroupForm
 
 
 
-from . models import Grupo, Tarea, Persona, Estudiante
+from . models import Grupo, Tarea, Estudiante, User
 
 
 
@@ -49,7 +49,7 @@ def create_user(request):
             username = create_user_form.cleaned_data["username"]
             password = create_user_form.cleaned_data["password"]
 
-            usuario_nuevo = Persona(
+            usuario_nuevo = User(
                 nombre = nombre,
                 apellido = apellido,
                 email = email,
@@ -68,7 +68,7 @@ def create_user(request):
     return render(request, 'users/create_user.html', context)
 
 class ListarUsuarios(ListView):
-    model = Persona
+    model = User
     context_object_name = 'Usuarios'
     template_name = 'users/listar_usuarios.html'
     ordering = ['apellido']
