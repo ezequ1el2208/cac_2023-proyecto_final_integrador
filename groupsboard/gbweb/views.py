@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . models import Grupo, Tarea, Persona
-from .forms import CreateUserForm
-from .forms import CreateGroupForm
+from django.forms import inlineformset_factory
 from django.views.generic.list import ListView
 from django.contrib import messages
+from .forms import CreateUserForm, Create_Task
+from .forms import CreateGroupForm
+
+
+
+from . models import Grupo, Tarea, Persona
+
 
 
 def index(request):
@@ -104,6 +109,16 @@ def tasks(request):
     })
 
 def create_task(request):
-    return render(request, 'tasks/create_task.html')
+    group = Grupo.objects.all()
+    form = Create_Task(initial={'group':group})
+
+    if request.method == 'POST':
+        form = Create_Task(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('groups')
+        
+    context = {'form':form}
+    return render(request, 'tasks/create_task.html', context)
 
 

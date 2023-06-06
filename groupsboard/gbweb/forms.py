@@ -1,10 +1,11 @@
 from django import forms
+from django.forms import ModelForm, Textarea
 from datetime import datetime
 from django.urls import reverse_lazy
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout  import Submit
 
-
+from .models import Tarea
 class CreateUserForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -62,4 +63,14 @@ class CreateGroupForm(forms.Form):
             attrs={'type': 'date', 'min': datetime.now().strftime('%Y-%m-%d')}
         )
     )
+
+class Create_Task(ModelForm):
+    
+    class Meta:
+        model = Tarea
+        fields = '__all__'
+        widgets = {
+            'description':Textarea(attrs={'cols':20,'rows': 10}),
+        }
+
 

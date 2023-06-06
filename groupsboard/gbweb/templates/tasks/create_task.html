@@ -1,2 +1,116 @@
 {% extends 'layouts/base_con_login.html' %}
 
+{% load static %}
+
+{% block header %}
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width:100%;
+    }
+    .user_card {
+        width: 350px;
+        margin-top: auto;
+        margin-bottom: auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+    }
+
+    .form_container {
+        margin-top: 20px;
+    }
+
+    #form-title{
+        color: white;
+    }
+    .create_task_btn {
+        width: 100%;
+        background: #0d6efd;
+        color: black;
+    }
+    .login_btn:focus {
+        box-shadow: none;
+        outline: 0px;
+    }
+    .login_container {
+        padding: 0 2rem;
+    }
+    .input-group{
+        display:flex;
+        flex-direction: column;
+        
+    }
+    #id_description{
+        resize:none;
+    }
+    .input-group-text {
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        background: #f7ba5b;
+        color: white;
+        border: 0;
+        border-radius: 0.25rem 0 0 0.25rem;
+        
+    }
+    .input_user,
+    .input_pass:focus {
+        box-shadow: none;
+        outline: 0px;
+    }
+
+</style>
+{% endblock header %}
+
+
+
+{% block content %}
+
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <h3 id="form-title">CREATE TASK</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text">title</span>
+                        </div>
+                        {{form.title}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text">description</span>
+                        </div>
+                        {{form.description}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text">group</span>
+                        </div>
+                        {{form.group}}
+                    </div>
+                       <div class="d-flex justify-content-center mt-3 login_container">
+                         <input class="btn create_task_btn" type="submit" value="Create task">
+                       </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

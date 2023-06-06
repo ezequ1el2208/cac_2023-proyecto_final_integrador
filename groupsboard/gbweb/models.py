@@ -24,6 +24,8 @@ class Grupo(models.Model):
     groupdescription = models.CharField(max_length=200, verbose_name='Descripción del grupo')
     next_meeting = models.DateField(verbose_name='Próxima reunión')
 
+    def __str__(self):
+        return self.groupname
 
 class Estudiante(models.Model):
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
