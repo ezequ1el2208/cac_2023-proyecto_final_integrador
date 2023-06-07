@@ -3,16 +3,16 @@
 {% block content %}
 <h1>Tasks</h1>
 
-{% for task in tasks %}
+{% for tarea in tareas %}
 <div>
-    {% if task.done == False %}
+    {% if tarea.terminado == False %}
     <p>Tarea pendiente</p>
     {% else %}
     <p>Tarea terminada</p>
     {% endif %}
 
-    <h5>{{task.description}}</h5>
-    <h5>Group: {{task.group.groupname}}</h5>
+    <h5>{{tarea.descripcion}}</h5>
+    <h5>Group: {{tarea.grupo.nombre}}</h5>
 
     <button>Delete</button>
     

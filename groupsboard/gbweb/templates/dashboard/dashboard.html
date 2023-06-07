@@ -16,11 +16,11 @@
                     <th>Student</th>
                     <th>email</th>
                 </tr>
-                {% for student in students %}
+                {% for usuario in usuarios %}
                 <tr>
                     <td><a class="btn btn-sm btn-info" href="">view</a></td>
-                    <td>{{student.persona.username}}</td>
-                    <td>{{student.persona.email}}</td>
+                    <td>{{usuario.estudiante.username}}</td>
+                    <td>{{usuario.estudiante.email}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -39,11 +39,11 @@
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
-                {% for group in groups %}
+                {% for grupo in grupos %}
                 <tr>
-                    <td>{{group.groupname}}</td>
-                    <td>{{group.grouptype}}</td>
-                    <td>{{group.grouptheme}}</td>
+                    <td>{{grupo.nombre}}</td>
+                    <td>{{grupo.tipo}}</td>
+                    <td>{{grupo.tema}}</td>
                     <td><a class="btn btn-sm btn-info" href="">Update</a></td>
                     <td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
                 </tr>

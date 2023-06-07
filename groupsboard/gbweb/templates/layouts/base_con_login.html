@@ -25,7 +25,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="{% url 'create_user'%}">Crear Usuario</a>
                 <a class="dropdown-item" href="{% url 'create_group'%}">Crear Grupo</a>
-                <a class="dropdown-item" href="{% url 'userprofile'%}">Editar</a>
+                {% comment %} <a class="dropdown-item" href="{% url 'userprofile/<str/id>'%}">Editar</a> {% endcomment %}
                 <a class="dropdown-item" href="{% url 'groups'%}">Mis Grupos</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Log Out</a>

@@ -7,7 +7,7 @@ from .forms import CreateGroupForm
 
 
 
-from . models import Grupo, Tarea, Estudiante, User
+from . models import *
 
 
 
@@ -24,14 +24,14 @@ def sing_in(request):
     return render(request, 'sing_in.html')
 
 def home(request): 
-    tasks = Tarea.objects.all()
-    groups = Grupo.objects.all()
-    students = Estudiante.objects.all()
+    tareas = Tarea.objects.all()
+    grupos = Grupo.objects.all()
+    usuarios = Estudiante.objects.all()
 
-    total_groups = groups.count()
-    total_tasks = tasks.count()
+    grupos_totales = grupos.count()
+    tareas_totales = tareas.count()
 
-    context = {'tasks':tasks, 'groups':groups, 'students': students, 'total_groups':total_groups, 'total_tasks': total_tasks}
+    context = {'tareas':tareas, 'grupos':grupos, 'usuarios': usuarios, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales}
 
     return render(request, 'dashboard/dashboard.html', context)
     
@@ -73,29 +73,23 @@ class ListarUsuarios(ListView):
     template_name = 'users/listar_usuarios.html'
     ordering = ['last_name']
 
-def userprofile(request):
-    # Esta es una lista de usuarios simulados
+def userprofile(request,id):
+    lideres = get_object_or_404(Lider, lider_id=id)
+    grupos= Grupo.objects.filter(id=id)
 
-    user_list = [
-        {'display_name': 'Carlos', 'id': '1', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '25', 'joined': False},
-        {'display_name': 'Juan', 'id': '2', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '40', 'joined': True, 'groups': [1,2,3]},
-        {'display_name': 'Maria', 'id': '3', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '38', 'joined': True, 'groups': [2,8,9]},
-        {'display_name': 'Laura', 'id': '4', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '22', 'joined': True, 'groups': [1,2,3]},
-        {'display_name': 'Pedro', 'id': '5', 'display_img': 'https://source.unsplash.com/featured/200x200', 'age': '45', 'joined': True, 'groups': [1,2,3]},
-    ]
+    # grupos = lider.group_set.count()
+    # grupos_totales = grupos.count()
 
-    context = {
-        'simulated_users': user_list[1],
-    }
+    context = {'lideres':lideres, 'grupos':grupos}
 
     return render(request, 'users/userprofile.html', context)
 
-
 def group(request):
-    groups = Grupo.objects.all()
-    return render(request, 'groups/groups.html',{
-        'groups': groups
-    })
+    grupos = Grupo.objects.all()
+
+    context = {'grupos': grupos}
+
+    return render(request, 'groups/groups.html',context)
 
 def create_group(request):
     if request.method == 'GET':
@@ -103,26 +97,25 @@ def create_group(request):
             'form': CreateGroupForm()
         })
     else: 
-        Grupo.objects.create(groupname=request.POST["groupname"], grouptype=request.POST["grouptype"], grouptheme=request.POST["grouptheme"], groupdescription=request.POST["groupdescription"],
-        next_meeting=request.POST["next_meeting"])
+        Grupo.objects.create(nombre=request.POST["nombre"], tipo=request.POST["tipo"], tema=request.POST["tema"], descripcion=request.POST["descripcion"], proximo_encuentro=request.POST["proximo_encuentro"])
         return redirect('groups')
     
 def group_detail(request, id):
-    groups = get_object_or_404(Grupo, id=id)
-    tareas = Tarea.objects.filter(group_id = id)
-    return render(request, 'groups/group_detail.html',{
-        'groups': groups,
-        'tareas': tareas
-    })
+    grupos = get_object_or_404(Grupo, id=id)
+    tareas = Tarea.objects.filter(grupo_id = id)
+
+    context = {'grupos': grupos, 'tareas': tareas}
+
+    return render(request, 'groups/group_detail.html',context)
 
 def tasks(request):
-    tasks = Tarea.objects.all()
-    context = {'tasks' : tasks}
+    tareas = Tarea.objects.all()
+    context = {'tareas' : tareas}
     return render(request, 'tasks/tasks.html', context)
 
 def create_task(request):
-    group = Grupo.objects.all()
-    form = Create_Task(initial={'group':group})
+    grupo = Grupo.objects.all()
+    form = Create_Task(initial={'grupo':grupo})
 
     if request.method == 'POST':
         form = Create_Task(request.POST)

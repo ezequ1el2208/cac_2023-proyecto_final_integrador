@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout  import Submit
 
 from .models import Tarea
+
 class CreateUserForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -32,31 +33,27 @@ class CreateGroupForm(forms.Form):
         self.helper.form_class = 'form-group'
         self.helper.add_input(Submit('submit', 'Crear grupo'))
 
-    groupname = forms.CharField(
-        label = "Nombre del grupo",
-        required=True,
-        max_length=50,
-    )
+    nombre = forms.CharField(label = "Nombre del grupo", required=True, max_length=50)
 
-    grouptype = forms.ChoiceField(
+    tipo = forms.ChoiceField(
         label="Tipo de grupo",
         required=True,
-        choices=[('1','Público'),('2','Privado')],
+        choices=[('Público','Público'),('Privado','Privado')],
     )
 
-    grouptheme = forms.CharField(
+    tema = forms.CharField(
         label = "Tema del grupo",
         required=True,
         max_length=200,
     )
 
-    groupdescription = forms.CharField(
+    descripcion = forms.CharField(
         label = "Descripción del grupo",
         required=True,
         max_length=200,
     )
 
-    next_meeting = forms.DateField(
+    proximo_encuentro = forms.DateField(
         label = "Próxima reunión",
         required=True,
         widget=forms.DateInput(

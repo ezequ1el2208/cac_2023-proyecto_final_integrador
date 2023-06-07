@@ -2,12 +2,14 @@
 {% block title %}Groups{% endblock %}
 
 {% block content %}
-<h1>Groups</h1>
-{% for group in groups %}
+
+<h1>Grupos</h1>
+
+{% for grupo in grupos %}
 
 <article>
-    <a href="{% url 'group_detail' group.id %}">
-        <h1>{{group.groupname}}</h1> 
+    <a href="{% url 'group_detail' grupo.id %}">
+        <h1>{{grupo.nombre}}</h1> 
     </a>
 </article>
     

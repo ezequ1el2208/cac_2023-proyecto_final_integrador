@@ -7,41 +7,41 @@ from django.db import models
 
 # Create your models here.
 options_type=(
-    (1,'Público'),
-    (2,'Privado')
+    ('Público','Público'),
+    ('Privado','Privado')
     )
 
-class Grupo(models.Model):
-    groupname = models.CharField(max_length=200, verbose_name='Nombre del grupo:')
-    grouptype = models.CharField(max_length=1, choices=options_type)
-    grouptheme =models.CharField(max_length=200, verbose_name='Tema del grupo')
-    groupdescription = models.CharField(max_length=200, verbose_name='Descripción del grupo')
-    next_meeting = models.DateField(verbose_name='Próxima reunión')
-
+class Lider(models.Model):
+    lider = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    legajo = models.CharField(max_length=100, verbose_name='Legajo')
+    
     def __str__(self):
-        return self.groupname
+        return self.lider.username
 
 class Estudiante(models.Model):
-    persona = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    estudiante = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=100, verbose_name='Legajo')
-    cursos = models.ManyToManyField(Grupo)
 
     def __str__(self):
-        return self.persona.username
-    
-class Instructor(models.Model):
-    persona = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    legajo = models.CharField(max_length=100, verbose_name='Legajo')
-    cursos = models.ManyToManyField(Grupo)
+        return self.estudiante.username
+
+class Grupo(models.Model):
+    nombre = models.CharField(max_length=200, verbose_name='Nombre del grupo:')
+    tipo = models.CharField(max_length=10, choices=options_type)
+    tema =models.CharField(max_length=200, verbose_name='Tema del grupo')
+    descripcion = models.CharField(max_length=200, verbose_name='Descripción del grupo')
+    proximo_encuentro = models.DateField(verbose_name='Próxima reunión')
+    lider= models.ForeignKey(Lider, on_delete=models.CASCADE)
+    estudiante = models.ManyToManyField(Estudiante)
 
     def __str__(self):
-        return self.persona.username
+        return self.nombre
     
 class Tarea(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField(null=True, verbose_name='Descripcion')
-    group = models.ForeignKey(Grupo, on_delete=models.CASCADE)
-    done = models.BooleanField(default=False)
+    titulo = models.CharField(max_length=200)
+    descripcion = models.TextField(null=True, verbose_name='Descripción')
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
+    terminado = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title + ' - ' + self.group.groupname
+        return self.titulo + ' - ' + self.grupo.nombre
