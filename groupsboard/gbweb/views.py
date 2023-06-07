@@ -42,10 +42,10 @@ def create_user(request):
         # POST
         create_user_form = CreateUserForm(request.POST)
         if create_user_form.is_valid():
-            nombre = create_user_form.cleaned_data["nombre"]
-            apellido = create_user_form.cleaned_data["apellido"]
+            nombre = create_user_form.cleaned_data["first_name"]
+            apellido = create_user_form.cleaned_data["last_name"]
             email = create_user_form.cleaned_data["email"]
-            dni = create_user_form.cleaned_data["dni"]
+            # dni = create_user_form.cleaned_data["dni"]
             username = create_user_form.cleaned_data["username"]
             password = create_user_form.cleaned_data["password"]
 
@@ -53,7 +53,7 @@ def create_user(request):
                 nombre = nombre,
                 apellido = apellido,
                 email = email,
-                dni = dni,
+                # dni = dni,
                 username = username,
                 password = password,
             )
@@ -71,7 +71,7 @@ class ListarUsuarios(ListView):
     model = User
     context_object_name = 'Usuarios'
     template_name = 'users/listar_usuarios.html'
-    ordering = ['apellido']
+    ordering = ['last_name']
 
 def userprofile(request):
     # Esta es una lista de usuarios simulados
