@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from django.contrib import messages
 from django.contrib.auth.models import Group
 
@@ -38,7 +40,7 @@ def sing_up(request):
             return redirect('sing_in')
     
     context={'form': create_user_form}
-    return render(request, 'sing_up.html', context)
+    return render(request, 'login/sing_up.html', context)
 
 def sing_in(request):
     if request.method == 'POST':
@@ -53,12 +55,14 @@ def sing_in(request):
             messages.info(request, 'Username or Password is incorrect')
 
     context={}
-    return render(request, 'sing_in.html', context)
+    return render(request, 'login/sing_in.html', context)
 
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('sing_in')
 
+
+@login_required(login_url='sing_in')
 def home(request): 
     tareas = Tarea.objects.all()
     grupos = Grupo.objects.all()
@@ -109,6 +113,8 @@ class ListarUsuarios(ListView):
     template_name = 'users/listar_usuarios.html'
     ordering = ['last_name']
 
+
+@login_required(login_url='sing_in')
 def userprofile(request,id):
     lideres = get_object_or_404(Lider, lider_id=id)
     grupos= Grupo.objects.filter(id=id)
@@ -120,6 +126,8 @@ def userprofile(request,id):
 
     return render(request, 'users/userprofile.html', context)
 
+
+@login_required(login_url='sing_in')
 def group(request):
     grupos = Grupo.objects.all()
 
@@ -127,6 +135,8 @@ def group(request):
 
     return render(request, 'groups/groups.html',context)
 
+
+@login_required(login_url='sing_in')
 def create_group(request):
     if request.method == 'GET':
         return render(request, 'groups/create_group.html', {
@@ -135,7 +145,9 @@ def create_group(request):
     else: 
         Grupo.objects.create(nombre=request.POST["nombre"], tipo=request.POST["tipo"], tema=request.POST["tema"], descripcion=request.POST["descripcion"], proximo_encuentro=request.POST["proximo_encuentro"])
         return redirect('groups')
-    
+
+
+@login_required(login_url='sing_in')
 def group_detail(request, id):
     grupos = get_object_or_404(Grupo, id=id)
     tareas = Tarea.objects.filter(grupo_id = id)
@@ -144,11 +156,15 @@ def group_detail(request, id):
 
     return render(request, 'groups/group_detail.html',context)
 
+
+@login_required(login_url='sing_in')
 def tasks(request):
     tareas = Tarea.objects.all()
     context = {'tareas' : tareas}
     return render(request, 'tasks/tasks.html', context)
 
+
+@login_required(login_url='sing_in')
 def create_task(request):
     grupo = Grupo.objects.all()
     form = Create_Task(initial={'grupo':grupo})

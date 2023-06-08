@@ -135,5 +135,5 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-LOGIN_URL = 'login/login.html'
-LOGIN_REDIRECT_URL = 'login/login.html'
+LOGIN_URL = 'login/sing_in.html'
+LOGIN_REDIRECT_URL = 'login/sing_in.html'
