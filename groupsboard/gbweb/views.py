@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.forms import inlineformset_factory
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.models import Group
+
 from django.views.generic.list import ListView
 from django.contrib import messages
 from .forms import CreateUserForm, Create_Task
@@ -18,10 +21,43 @@ def about(request):
     return render(request, 'about.html')
 
 def sing_up(request):
-    return render(request, 'sing_up.html')
+    create_user_form = CreateUserForm()
+    if request.method == 'POST':
+        create_user_form = CreateUserForm(request.POST)
+        if create_user_form.is_valid():
+            user = create_user_form.save()
+            username = create_user_form.cleaned_data.get('username')
+
+            nuevo_estudiante = Group.objects.get(name='Estudiante')
+            user.groups.add(nuevo_estudiante)
+            Estudiante.objects.create(
+                estudiante=user
+            )
+
+            messages.success(request, 'La cuenta de ' + username + ' fue creada con exito')
+            return redirect('sing_in')
+    
+    context={'form': create_user_form}
+    return render(request, 'sing_up.html', context)
 
 def sing_in(request):
-    return render(request, 'sing_in.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'Username or Password is incorrect')
+
+    context={}
+    return render(request, 'sing_in.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 def home(request): 
     tareas = Tarea.objects.all()
