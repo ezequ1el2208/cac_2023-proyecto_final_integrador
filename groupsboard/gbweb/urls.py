@@ -9,7 +9,7 @@ urlpatterns = [
     path('home', views.home, name="home"),
 
     path('lider/<str:id>/', views.lider, name="lider"),
-    path('estudiante/<str:id>/', views.estudiante, name="estudiante"),
+    path('estudiante/', views.estudiante, name="estudiante"),
     
     path('create_group/', views.create_group, name="create_group"),
     path('groups/', views.group, name="groups"),

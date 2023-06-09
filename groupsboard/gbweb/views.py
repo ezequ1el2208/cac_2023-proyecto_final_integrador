@@ -83,7 +83,7 @@ class ListarUsuarios(ListView):
     template_name = 'users/listar_usuarios.html'
     ordering = ['last_name']
 
-
+login_required(login_url='sing_in')
 def lider(request, id):
     lider = Lider.objects.get(lider_id=id)
 
@@ -97,29 +97,14 @@ def lider(request, id):
 
 
 @login_required(login_url='sing_in')
-def estudiante(request,id):
-    estudiantes = Estudiante.objects.get(estudiante_id=id)
-    
-    grupos= estudiantes.grupo_set.filter(id)
-    
+def estudiante(request):
 
-    context = {'estudiantes':estudiantes, 'grupos':grupos}
-
-    return render(request, 'users/estudiante.html', context)
-
+    return render(request, 'users/estudiante.html')
 
 
 def accountSettings(request):
-    estudiante = request.user.estudiante
-    form = CreateUserForm(instance=estudiante)
-
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST, request.FILES, instance=estudiante)
-        if form.is_valid():
-            form.save()
-
-    context ={'form':form}
-    return render(request, 'users/account_settings.html', context)
+    
+    return render(request, 'users/account_settings.html')
 
 
 @login_required(login_url='sing_in')
