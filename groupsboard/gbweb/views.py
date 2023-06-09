@@ -76,37 +76,6 @@ def home(request):
     return render(request, 'dashboard/dashboard.html', context)
     
 
-def create_user(request):
-    context = {}
-    if request.method == "POST":
-        # POST
-        create_user_form = CreateUserForm(request.POST)
-        if create_user_form.is_valid():
-            nombre = create_user_form.cleaned_data["first_name"]
-            apellido = create_user_form.cleaned_data["last_name"]
-            email = create_user_form.cleaned_data["email"]
-            # dni = create_user_form.cleaned_data["dni"]
-            username = create_user_form.cleaned_data["username"]
-            password = create_user_form.cleaned_data["password"]
-
-            usuario_nuevo = User(
-                nombre = nombre,
-                apellido = apellido,
-                email = email,
-                # dni = dni,
-                username = username,
-                password = password,
-            )
-            usuario_nuevo.save()
-            
-            messages.add_message(request, messages.SUCCESS, 'Usuario creado con éxito')
-            return redirect("users")
-    else:
-        # GET
-        create_user_form = CreateUserForm()
-    context = {'form': create_user_form}
-    return render(request, 'users/create_user.html', context)
-
 class ListarUsuarios(ListView):
     model = User
     context_object_name = 'Usuarios'
@@ -138,14 +107,16 @@ def group(request):
 
 @login_required(login_url='sing_in')
 def create_group(request):
-    if request.method == 'GET':
-        return render(request, 'groups/create_group.html', {
-            'form': CreateGroupForm()
-        })
-    else: 
-        Grupo.objects.create(nombre=request.POST["nombre"], tipo=request.POST["tipo"], tema=request.POST["tema"], descripcion=request.POST["descripcion"], proximo_encuentro=request.POST["proximo_encuentro"])
-        return redirect('groups')
+    form = CreateGroupForm()
 
+    if request.method == 'POST':
+        form = CreateGroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('groups')
+    
+    context = {'form':form}
+    return render(request, 'groups/create_group.html', context)
 
 @login_required(login_url='sing_in')
 def group_detail(request, id):
@@ -177,5 +148,4 @@ def create_task(request):
         
     context = {'form':form}
     return render(request, 'tasks/create_task.html', context)
-
 

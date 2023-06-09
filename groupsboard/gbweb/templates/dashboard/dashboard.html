@@ -5,20 +5,19 @@
 <br>
 
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md">
         <h5>Students</h5>
         <hr>
         <div class="card card-body">
-            <a class="btn btn-primary btn-sm btn block" href="">Create Student</a>
             <table class="table table-sm">
                 <tr>
                     <th></th>
-                    <th>Student</th>
-                    <th>email</th>
+                    <th>Estudiante</th>
+                    <th>Email</th>
                 </tr>
                 {% for usuario in usuarios %}
                 <tr>
-                    <td><a class="btn btn-sm btn-info" href="">view</a></td>
+                    <td><a class="btn btn-sm btn-info" href="">Ver</a></td>
                     <td>{{usuario.estudiante.username}}</td>
                     <td>{{usuario.estudiante.email}}</td>
                 </tr>
@@ -33,19 +32,19 @@
         <div class="card card-body">
             <table class="table table-sm">
                 <tr>
-                    <th>Group</th>
-                    <th>Type</th>
-                    <th>Theme</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th>Grupo</th>
+                    <th>Tipo</th>
+                    <th>Tema</th>
+                    <th>Actualizar</th>
+                    <th>Borrar</th>
                 </tr>
                 {% for grupo in grupos %}
                 <tr>
                     <td>{{grupo.nombre}}</td>
                     <td>{{grupo.tipo}}</td>
                     <td>{{grupo.tema}}</td>
-                    <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-                    <td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+                    <td><a class="btn btn-sm btn-info" href="">Actualizar</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="">Borrar</a></td> 
                 </tr>
                 
                 {% endfor %}

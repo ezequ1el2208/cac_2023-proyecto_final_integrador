@@ -1,9 +1,11 @@
 {% extends 'layouts/base_con_login.html' %}
-{% block title %}Groups{% endblock %}
+{% block title %}Grupos{% endblock %}
 
 {% block content %}
 
-<h1>Grupos</h1>
+
+
+{% comment %} <h1>Grupos</h1>
 
 {% for grupo in grupos %}
 
@@ -13,5 +15,38 @@
     </a>
 </article>
     
-{% endfor %}
+{% endfor %} {% endcomment %}
+
+
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Products</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Descripcion</th>
+                    <th>Próximo encuentro</th>
+                </tr>
+                {% for grupo in grupos %}
+                    <tr>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'group_detail' grupo.id %}">view</a></td>
+                        <td>{{grupo.nombre}}</td>
+                        <td>{{grupo.tipo}}</td>
+                        <td>{{grupo.descripcion}}</td>
+                        <td>{{grupo.proximo_encuentro}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+</div>
+
 {% endblock %}
