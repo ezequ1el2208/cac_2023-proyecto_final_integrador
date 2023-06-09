@@ -3,59 +3,10 @@
 {% load static %}
 
 {% block header %}
-<style>
-    
-    html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width:100%;
-    }
-    .user_card {
-        width: 350px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding: 10px;
-
-    }
-
-    .form_container {
-        margin-top: 20px;
-    }
-
-    #form-title{
-        color: black;
-    }
-
-    .login_btn:focus {
-        box-shadow: none;
-        outline: 0px;
-    }
-    .login_container {
-        padding: 0 2rem;
-    }
-    .input-group{
-        display:flex;
-        flex-direction: column;
-        
-    }
-    #id_description{
-        resize:none;
-    }
-    .input-group-text {
-        display:flex;
-        flex-direction:column;
-        align-items: center;
-        background: lightgray;
-        color: black;
-        margin-bottom: 0.5em;
-    }
-</style>
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create_form.css' %}">
+{% endblock %}
 {% endblock header %}
-
-
 
 {% block content %}
 

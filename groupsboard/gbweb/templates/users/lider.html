@@ -1,0 +1,76 @@
+{% extends 'layouts/base_con_login.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+           <h5>Customer:</h5>
+            <hr>
+            <a class="btn btn-outline-info btn-sm btn-block" href="#">Actualizar Lider de grupo</a>
+            <a class="btn btn-outline-info btn-sm btn-block" href="#">Crear grupo</a> 
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Informacion de Contacto</h5>
+            <hr>
+            <p>Nombre: {{lider.lider.first_name}}</p>
+            <p>Apellido: {{lider.lider.last_name}}</p>
+            <p>Email: {{lider.lider.email}}</p>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Grupos Totales</h5>
+            <hr>
+            <h1 style="text-align: center; padding: 10px;">{{grupos_count}}</h1>
+        </div>
+    </div>
+
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                {{myFilter.form}}
+            <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+           
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>nombre</th>
+                    <th>tipo</th>
+                    <th>tema</th>
+                    <th>descripcion</th>
+                    {% comment %} <th>Update</th>
+                    <th>Remove</th> {% endcomment %}
+                </tr>
+                {% for grupo in grupos %}
+                <tr>
+                    <td>{{grupo.nombre}}</td>
+                    <td>{{grupo.tipo}}</td>
+                    <td>{{grupo.tema}}</td>
+                    <td>{{grupo.descripcion}}</td>
+                    {% comment %} <td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.id %}">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.id %}">Delete</a></td> {% endcomment %}
+                </tr>
+                
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

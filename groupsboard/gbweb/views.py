@@ -66,12 +66,13 @@ def logout_user(request):
 def home(request): 
     tareas = Tarea.objects.all()
     grupos = Grupo.objects.all()
-    usuarios = Estudiante.objects.all()
+    lideres = Lider.objects.all()
+    estudiantes = Estudiante.objects.all()
 
     grupos_totales = grupos.count()
     tareas_totales = tareas.count()
 
-    context = {'tareas':tareas, 'grupos':grupos, 'usuarios': usuarios, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales}
+    context = {'tareas':tareas, 'grupos':grupos, 'lideres': lideres, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales, 'estudiantes':estudiantes}
 
     return render(request, 'dashboard/dashboard.html', context)
     
@@ -83,17 +84,42 @@ class ListarUsuarios(ListView):
     ordering = ['last_name']
 
 
+def lider(request, id):
+    lider = Lider.objects.get(lider_id=id)
+
+    grupos = lider.grupo_set.all()
+    grupos_count = grupos.count()
+
+
+
+    context = {'lider':lider, 'grupos':grupos, 'grupos_count':grupos_count}
+    return render(request, 'users/lider.html', context)
+
+
 @login_required(login_url='sing_in')
-def userprofile(request,id):
-    lideres = get_object_or_404(Lider, lider_id=id)
-    grupos= Grupo.objects.filter(id=id)
+def estudiante(request,id):
+    estudiantes = Estudiante.objects.get(estudiante_id=id)
+    
+    grupos= estudiantes.grupo_set.filter(id)
+    
 
-    # grupos = lider.group_set.count()
-    # grupos_totales = grupos.count()
+    context = {'estudiantes':estudiantes, 'grupos':grupos}
 
-    context = {'lideres':lideres, 'grupos':grupos}
+    return render(request, 'users/estudiante.html', context)
 
-    return render(request, 'users/userprofile.html', context)
+
+
+def accountSettings(request):
+    estudiante = request.user.estudiante
+    form = CreateUserForm(instance=estudiante)
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST, request.FILES, instance=estudiante)
+        if form.is_valid():
+            form.save()
+
+    context ={'form':form}
+    return render(request, 'users/account_settings.html', context)
 
 
 @login_required(login_url='sing_in')

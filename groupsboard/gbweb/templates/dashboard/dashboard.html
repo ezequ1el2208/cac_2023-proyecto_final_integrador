@@ -5,29 +5,55 @@
 <br>
 
 <div class="row">
-    <div class="col-md">
-        <h5>Students</h5>
+    <div class="col-md-5">
+        <h5>Lideres</h5>
         <hr>
         <div class="card card-body">
             <table class="table table-sm">
                 <tr>
                     <th></th>
-                    <th>Estudiante</th>
+                    <th>Nombre</th>
                     <th>Email</th>
+                    <th>Legajo</th>
                 </tr>
-                {% for usuario in usuarios %}
+                {% for lider in lideres %}
                 <tr>
-                    <td><a class="btn btn-sm btn-info" href="">Ver</a></td>
-                    <td>{{usuario.estudiante.username}}</td>
-                    <td>{{usuario.estudiante.email}}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'lider' lider.lider.id %}">Ver</a></td>
+                    <td>{{lider.lider.username}}</td>
+                    <td>{{lider.lider.email}}</td>
+                    <td>{{lider.legajo}}</td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
-
-    <div class="col-md-7">
-        <h5>Groups</h5>
+    <div class="col-md">
+        <h5>Estudiantes</h5>
+        <hr>
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Legajo</th>
+                </tr>
+                {% for estudiante in estudiantes %}
+                <tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'estudiante' estudiante.estudiante.id %}">Ver</a></td>
+                    <td>{{estudiante.estudiante.username}}</td>
+                    <td>{{estudiante.estudiante.email}}</td>
+                    <td>{{estudiante.legajo}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+        
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h5>Grupos</h5>
         <hr>
         <div class="card card-body">
             <table class="table table-sm">
@@ -51,6 +77,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 
 <br>

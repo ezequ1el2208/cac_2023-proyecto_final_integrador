@@ -1,0 +1,46 @@
+{% extends 'layouts/base_con_login.html' %}
+
+{% block title %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+
+{{estudiantes.legajo}}
+{{estudiantes.estudiante.first_name}}
+
+{% for grupo in grupos %}
+
+<h1>{{grupo.nombre}}</h1>
+
+
+<br>
+
+<div class="row">
+    <div class="col-md-5">
+        <h5>Lideres</h5>
+        <hr>
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    {% comment %} <th></th> {% endcomment %}
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Tema</th>
+                </tr>
+                {% for grupo in grupos %}
+                <tr>
+                    {% comment %} <td><a class="btn btn-sm btn-info" href="{% url 'lider' lider.lider.id %}">Ver</a></td> {% endcomment %}
+                    <td>{{grupo.nombre}}</td>
+                    <td>{{grupo.tipo}}</td>
+                    <td>{{grupo.tema}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endfor %}
+
+{% endblock %}
