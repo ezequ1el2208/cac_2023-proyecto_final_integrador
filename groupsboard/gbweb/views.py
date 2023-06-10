@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from django.contrib import messages
 from django.contrib.auth.models import Group
@@ -18,9 +18,6 @@ from . models import *
 
 def index(request):
     return render(request, 'index.html')
-
-def about(request):
-    return render(request, 'about.html')
 
 def sing_up(request):
     create_user_form = CreateUserForm()
@@ -50,7 +47,17 @@ def sing_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            group = None
+            if request.user.groups.exists():
+                group = request.user.groups.all()[0].name
+                if group == 'Lider':
+                    return redirect('account')
+                if group == 'Admin':
+                    return redirect('home')
+                else:
+                    return redirect('estudiante')
+
+            # return redirect('home')
         else:
             messages.info(request, 'Username or Password is incorrect')
 
@@ -63,6 +70,7 @@ def logout_user(request):
 
 
 @login_required(login_url='sing_in')
+
 def home(request): 
     tareas = Tarea.objects.all()
     grupos = Grupo.objects.all()
@@ -90,16 +98,20 @@ def lider(request, id):
     grupos = lider.grupo_set.all()
     grupos_count = grupos.count()
 
-
-
     context = {'lider':lider, 'grupos':grupos, 'grupos_count':grupos_count}
     return render(request, 'users/lider.html', context)
 
 
 @login_required(login_url='sing_in')
-def estudiante(request):
+def estudiante(request, id):
+    estudiante = Estudiante.objects.get(estudiante_id=id)
 
-    return render(request, 'users/estudiante.html')
+    grupos = estudiante.grupo_set.all()
+    grupos_count = grupos.count()
+
+    context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count}
+
+    return render(request, 'users/estudiante.html', context)
 
 
 def accountSettings(request):

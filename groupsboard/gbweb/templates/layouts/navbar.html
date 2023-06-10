@@ -23,21 +23,18 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'groups' %}">Grupos</a>
           </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'users' %}">Usuario</a>
-          </li>
-          {% endif %}
-          {% if perms.gbweb.add_tarea %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'create_task'%}">Crear Tareas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'create_group'%}">Crear Grupo</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'users' %}">Usuario</a>
+          </li>
           {% endif %}
         </ul>
-       
       </div>
     </div>
     <span class="hello-msg">Hola, {{user.username}}</span>

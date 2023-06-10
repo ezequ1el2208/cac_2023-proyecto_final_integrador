@@ -40,7 +40,7 @@
                 </tr>
                 {% for estudiante in estudiantes %}
                 <tr>
-                    {% comment %} <td><a class="btn btn-sm btn-info" href="{% url 'estudiante' estudiante.estudiante.id %}">Ver</a></td> {% endcomment %}
+                    <td><a class="btn btn-sm btn-info" href="{% url 'estudiante' estudiante.estudiante.id %}">Ver</a></td>
                     <td>{{estudiante.estudiante.username}}</td>
                     <td>{{estudiante.estudiante.email}}</td>
                     <td>{{estudiante.legajo}}</td>
