@@ -19,7 +19,9 @@
                 </tr>
                 {% for tarea in tareas %}
                     <tr>
+                        {% filter upper %}
                         <td>{{tarea.grupo.nombre}}</td>
+                        {% endfilter %}
                         <td>{% if tarea.terminado == False %}
                             Tarea pendiente
                             {% else %}

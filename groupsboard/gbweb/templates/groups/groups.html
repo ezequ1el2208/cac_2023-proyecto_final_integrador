@@ -37,7 +37,9 @@
                 {% for grupo in grupos %}
                     <tr>
                         <td><a class="btn btn-sm btn-info" href="{% url 'group_detail' grupo.id %}">view</a></td>
+                        {% filter upper %}
                         <td>{{grupo.nombre}}</td>
+                        {% endfilter %}
                         <td>{{grupo.tipo}}</td>
                         <td>{{grupo.descripcion}}</td>
                         <td>{{grupo.proximo_encuentro}}</td>
