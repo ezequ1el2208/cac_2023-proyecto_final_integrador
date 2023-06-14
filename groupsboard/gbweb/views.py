@@ -1,19 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 from django.contrib.auth.models import Group
 
 from django.views.generic.list import ListView
-from django.contrib import messages
-from .forms import CreateUserForm, Create_Task
-from .forms import CreateGroupForm
-
-
+from .forms import CreateUserForm, Create_Task, CreateGroupForm, UserChangeForm
+from .filters import GrupoFiltro
 
 from . models import *
-
 
 
 def index(request):
@@ -50,14 +46,12 @@ def sing_in(request):
             group = None
             if request.user.groups.exists():
                 group = request.user.groups.all()[0].name
-                if group == 'Lider':
-                    return redirect('account')
                 if group == 'Admin':
                     return redirect('home')
+                if group == 'Lider':
+                    return redirect('user_lider')
                 else:
-                    return redirect('estudiante')
-
-            # return redirect('home')
+                    return redirect('user_estudiante')      
         else:
             messages.info(request, 'Username or Password is incorrect')
 
@@ -70,7 +64,6 @@ def logout_user(request):
 
 
 @login_required(login_url='sing_in')
-
 def home(request): 
     tareas = Tarea.objects.all()
     grupos = Grupo.objects.all()
@@ -80,7 +73,11 @@ def home(request):
     grupos_totales = grupos.count()
     tareas_totales = tareas.count()
 
-    context = {'tareas':tareas, 'grupos':grupos, 'lideres': lideres, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales, 'estudiantes':estudiantes}
+    filtro = GrupoFiltro(request.GET, queryset=grupos)
+    grupos = filtro.qs
+
+    
+    context = {'tareas':tareas, 'grupos':grupos, 'lideres': lideres, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales, 'estudiantes':estudiantes, 'filtro':filtro}
 
     return render(request, 'dashboard/dashboard.html', context)
     
@@ -90,6 +87,7 @@ class ListarUsuarios(ListView):
     context_object_name = 'Usuarios'
     template_name = 'users/listar_usuarios.html'
     ordering = ['last_name']
+
 
 login_required(login_url='sing_in')
 def lider(request, id):
@@ -102,6 +100,7 @@ def lider(request, id):
     return render(request, 'users/lider.html', context)
 
 
+
 @login_required(login_url='sing_in')
 def estudiante(request, id):
     estudiante = Estudiante.objects.get(estudiante_id=id)
@@ -109,20 +108,55 @@ def estudiante(request, id):
     grupos = estudiante.grupo_set.all()
     grupos_count = grupos.count()
 
-    context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count}
+    filtro = GrupoFiltro(request.GET, queryset=grupos)
+    grupos = filtro.qs
 
+    context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count, 'filtro':filtro}
     return render(request, 'users/estudiante.html', context)
+
+def user_lider(request):
+    
+    lider = request.user.lider
+    grupos = request.user.lider.grupo_set.all()
+    grupos_total = grupos.count()
+   
+
+    context ={'lider':lider, 'grupos':grupos, 'grupos_total':grupos_total}
+    return render(request, 'users/user.html', context)
+
+def user_estudiante(request):
+    estudiantes = Estudiante.objects.get(estudiante = request.user)
+    grupos = estudiantes.grupo_set.all()
+    grupos_total = grupos.count()
+    
+    context ={'estudiantes':estudiantes, 'grupos':grupos, 'grupos_total':grupos_total}
+    return render(request, 'users/user.html', context)
+
+
+def ver_estudiantes(request, id ):
+    grupo = Grupo.objects.get(id=id)
+   
+    context = {'grupo':grupo}
+    return render(request, 'users/ver_estudiantes.html', context)
 
 
 def accountSettings(request):
+    usuario = request.user
+    form =UserChangeForm(instance=usuario)
+
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, request.FILES, instance=usuario)
+        if form.is_valid():
+            form.save()
+        
     
-    return render(request, 'users/account_settings.html')
+    context ={'form':form}
+    return render(request, 'users/account_settings.html', context)
 
 
 @login_required(login_url='sing_in')
 def group(request):
     grupos = Grupo.objects.all()
-
     context = {'grupos': grupos}
 
     return render(request, 'groups/groups.html',context)
@@ -141,15 +175,40 @@ def create_group(request):
     context = {'form':form}
     return render(request, 'groups/create_group.html', context)
 
+
 @login_required(login_url='sing_in')
 def group_detail(request, id):
-    grupos = get_object_or_404(Grupo, id=id)
+    grupos = Grupo.objects.get(id=id)
     tareas = Tarea.objects.filter(grupo_id = id)
 
-    context = {'grupos': grupos, 'tareas': tareas}
 
+    context = {'grupos': grupos, 'tareas': tareas}
     return render(request, 'groups/group_detail.html',context)
 
+
+def updateGroup(request, pk):
+    grupo = Grupo.objects.get(id=pk)
+    form = CreateGroupForm(instance=grupo)
+
+    if request.method == 'POST':
+        form = CreateGroupForm(request.POST, instance=grupo)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    
+    context ={'form':form}
+    return render(request, 'groups/create_group.html', context)
+
+
+def deleteGroup(request, pk):
+    grupo = Grupo.objects.get(id=pk)
+
+    if request.method == "POST":
+        grupo.delete()
+        return redirect('home')
+    
+    context={'grupo':grupo}
+    return render(request, 'groups/delete.html', context)
 
 @login_required(login_url='sing_in')
 def tasks(request):
@@ -171,4 +230,29 @@ def create_task(request):
         
     context = {'form':form}
     return render(request, 'tasks/create_task.html', context)
+
+
+def updateTask(request, pk):
+    tarea = Tarea.objects.get(id=pk)
+    form = Create_Task(instance=tarea)
+
+    if request.method == 'POST':
+        form = Create_Task(request.POST, instance=tarea)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    
+    context ={'form':form}
+    return render(request, 'tasks/create_task.html', context)
+
+
+def deleteTask(request, pk):
+    tarea = Tarea.objects.get(id=pk)
+
+    if request.method == "POST":
+        tarea.delete()
+        return redirect('home')
+    
+    context={'tarea':tarea}
+    return render(request, 'tasks/delete.html', context)
 

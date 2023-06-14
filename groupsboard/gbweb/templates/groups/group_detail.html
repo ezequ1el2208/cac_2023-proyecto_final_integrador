@@ -1,26 +1,47 @@
 {% extends 'layouts/base_con_login.html' %}
 
+
 {% block content %}
 
+{% for estudiantes in grupo.estudiante.all %}
+
+<h5>{{estudiantes.estudiante.first_name}}</h5>
+
+{% endfor %}
+
+{% comment %} <br>
+<div class="col-md">
+    <div class="card card-body">
+        <h5>Informacion del lider del grupo:</h5>
+        <hr>
+
+
+        <p>Nombre: {{lider.lider.first_name}}</p>
+        <p>Apellido: {{lider.lider.last_name}}</p>
+        <p>Email: {{lider.lider.email}}</p> 
+    </div>
+</div> {% endcomment %}
 
 <br>
 
-<div class="row">
-    <div class="col-md">
+<div class="row ">
+    <div class=" col-md">
+
         <div class="card card-body">
             <h1>Tareas de {{grupos.nombre}}</h1>
         </div>
+
         <div class="card card-body">
             <table class="table">
                 <tr>
-                    {% comment %} <th></th> {% endcomment %}
+                    
                     <th>Titulo</th>
                     <th>Descripcion</th>
                     <th>Terminado</th>
                 </tr>
                 {% for tarea in tareas %}
                     <tr>
-                        {% comment %} <td><a class="btn btn-sm btn-info" href="#">view</a> {% endcomment %}
+                        
                         <td>{{tarea.titulo}}</td>
                         <td>{{tarea.descripcion}}</td>
                         <td>{{tarea.terminado}}</td>
@@ -31,6 +52,7 @@
 
         </div>
     </div>
+    
 </div>
-
+<button type="button" class="btn btn-warning btn-sm "><a class="btn" href="{% url 'home' %}">Volver</a></button>
 {% endblock %}

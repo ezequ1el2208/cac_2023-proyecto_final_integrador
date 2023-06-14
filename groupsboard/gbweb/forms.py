@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm, Textarea
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import *
 
@@ -29,4 +29,11 @@ class Create_Task(ModelForm):
             'description':Textarea(attrs={'cols':20,'rows': 10}),
         }
 
-
+class UserChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        help_texts = {
+            'password': (''),
+        }
+        fields = ['username', 'first_name', 'last_name', 'email']
+        

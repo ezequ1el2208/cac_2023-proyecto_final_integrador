@@ -16,6 +16,8 @@
                     <th>Estado</th>
                     <th>Descripcion</th>
                     <th>Terminado</th>
+                    <th>Actualizar</th>
+                    <th>Borrar</th>
                 </tr>
                 {% for tarea in tareas %}
                     <tr>
@@ -27,6 +29,8 @@
                             {% endif %}</td>
                         <td>{{tarea.descripcion}}</td>
                         <td>{{tarea.terminado}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_task' tarea.id %}">Actualizar</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_task' tarea.id %}">Borrar</a></td> 
                     </tr>
                 {% endfor %}
             </table>

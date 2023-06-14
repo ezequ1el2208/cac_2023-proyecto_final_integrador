@@ -1,0 +1,23 @@
+{% extends 'layouts/base_con_login.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card-card-body">
+
+            <p>¿Estas seguro de querer borrar la tarea "{{tarea}}?"</p>
+
+            <form action="{% url 'delete_task' tarea.id %}" method="POST">
+                {% csrf_token %}
+                <a class="btn btn-warning" href="{% url 'home' %}">Cancel</a>
+                <input class="btn btn-danger" type="submit" name="Submit">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

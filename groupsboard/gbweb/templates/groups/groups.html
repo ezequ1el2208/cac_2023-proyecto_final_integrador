@@ -4,20 +4,6 @@
 {% block content %}
 
 
-
-{% comment %} <h1>Grupos</h1>
-
-{% for grupo in grupos %}
-
-<article>
-    <a href="{% url 'group_detail' grupo.id %}">
-        <h1>{{grupo.nombre}}</h1> 
-    </a>
-</article>
-    
-{% endfor %} {% endcomment %}
-
-
 <br>
 
 <div class="row">
@@ -36,7 +22,7 @@
                 </tr>
                 {% for grupo in grupos %}
                     <tr>
-                        <td><a class="btn btn-sm btn-info" href="{% url 'group_detail' grupo.id %}">view</a></td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'group_detail' grupo.id %}">Ver Tareas</a></td>
                         <td>{{grupo.nombre}}</td>
                         <td>{{grupo.tipo}}</td>
                         <td>{{grupo.descripcion}}</td>
