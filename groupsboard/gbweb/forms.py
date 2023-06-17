@@ -6,12 +6,20 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import *
 
+from django.core.exceptions import ValidationError
+
 class CreateUserForm(UserCreationForm):
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+    def clean(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Error!!! Ya hay un usuario inscripto con ese e-mail")
+
+        return self.cleaned_data
    
 class CreateGroupForm(ModelForm):
     
