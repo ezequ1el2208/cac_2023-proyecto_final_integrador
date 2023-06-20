@@ -15,6 +15,7 @@ from . models import *
 def index(request):
     return render(request, 'index.html')
 
+
 def sing_up(request):
     create_user_form = CreateUserForm()
     if request.method == 'POST':
@@ -28,12 +29,13 @@ def sing_up(request):
             Estudiante.objects.create(
                 estudiante=user
             )
-
+            
             messages.success(request, 'La cuenta de ' + username + ' fue creada con exito')
             return redirect('sing_in')
     
     context={'form': create_user_form}
     return render(request, 'login/sing_up.html', context)
+
 
 def sing_in(request):
     if request.method == 'POST':
@@ -57,6 +59,7 @@ def sing_in(request):
 
     context={}
     return render(request, 'login/sing_in.html', context)
+
 
 def logout_user(request):
     logout(request)
@@ -100,7 +103,6 @@ def lider(request, id):
     return render(request, 'users/lider.html', context)
 
 
-
 @login_required(login_url='sing_in')
 def estudiante(request, id):
     estudiante = Estudiante.objects.get(estudiante_id=id)
@@ -114,16 +116,19 @@ def estudiante(request, id):
     context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count, 'filtro':filtro}
     return render(request, 'users/estudiante.html', context)
 
+
+@login_required(login_url='sing_in')
 def user_lider(request):
     
     lider = request.user.lider
     grupos = request.user.lider.grupo_set.all()
     grupos_total = grupos.count()
-   
 
     context ={'lider':lider, 'grupos':grupos, 'grupos_total':grupos_total}
     return render(request, 'users/user.html', context)
 
+
+@login_required(login_url='sing_in')
 def user_estudiante(request):
     estudiantes = Estudiante.objects.get(estudiante = request.user)
     grupos = estudiantes.grupo_set.all()
@@ -133,6 +138,7 @@ def user_estudiante(request):
     return render(request, 'users/user.html', context)
 
 
+@login_required(login_url='sing_in')
 def ver_estudiantes(request, id ):
     grupo = Grupo.objects.get(id=id)
    
@@ -140,6 +146,7 @@ def ver_estudiantes(request, id ):
     return render(request, 'users/ver_estudiantes.html', context)
 
 
+@login_required(login_url='sing_in')
 def accountSettings(request):
     usuario = request.user
     form =UserChangeForm(instance=usuario)
@@ -186,6 +193,7 @@ def group_detail(request, id):
     return render(request, 'groups/group_detail.html',context)
 
 
+@login_required(login_url='sing_in')
 def updateGroup(request, pk):
     grupo = Grupo.objects.get(id=pk)
     form = CreateGroupForm(instance=grupo)
@@ -200,6 +208,7 @@ def updateGroup(request, pk):
     return render(request, 'groups/create_group.html', context)
 
 
+@login_required(login_url='sing_in')
 def deleteGroup(request, pk):
     grupo = Grupo.objects.get(id=pk)
 
@@ -209,6 +218,7 @@ def deleteGroup(request, pk):
     
     context={'grupo':grupo}
     return render(request, 'groups/delete.html', context)
+
 
 @login_required(login_url='sing_in')
 def tasks(request):
@@ -232,6 +242,7 @@ def create_task(request):
     return render(request, 'tasks/create_task.html', context)
 
 
+@login_required(login_url='sing_in')
 def updateTask(request, pk):
     tarea = Tarea.objects.get(id=pk)
     form = Create_Task(instance=tarea)
@@ -246,6 +257,7 @@ def updateTask(request, pk):
     return render(request, 'tasks/create_task.html', context)
 
 
+@login_required(login_url='sing_in')
 def deleteTask(request, pk):
     tarea = Tarea.objects.get(id=pk)
 

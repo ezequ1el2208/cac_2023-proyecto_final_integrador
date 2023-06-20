@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm, Textarea
 
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import *
 
