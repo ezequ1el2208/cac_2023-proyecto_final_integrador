@@ -3,4 +3,5 @@ cac2023venv/
 
 # ingorar sqlite y pycache
 *.sqlite3
-__pycache__/
+**/__pycache__/
+

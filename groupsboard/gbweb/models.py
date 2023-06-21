@@ -14,6 +14,7 @@ options_type=(
 class Lider(models.Model):
     lider = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=100, verbose_name='Legajo')
+   
     
     def __str__(self):
         return self.lider.username

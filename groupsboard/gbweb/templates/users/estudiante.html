@@ -30,6 +30,19 @@
 
 <br>
 
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                {{filtro.form}}
+            <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+           
+        </div>
+    </div>
+</div>
+
+<br>
 
 
 <div class="row">
@@ -37,6 +50,7 @@
         <div class="card card-body">
             <table class="table table-sm">
                 <tr>
+                    <th></th>
                     <th>nombre</th>
                     <th>tipo</th>
                     <th>tema</th>
@@ -44,6 +58,7 @@
                 </tr>
                 {% for grupo in grupos %}
                 <tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'ver_estudiantes' grupo.id %}">Ver estudiantes</a></td>
                     <td>{{grupo.nombre}}</td>
                     <td>{{grupo.tipo}}</td>
                     <td>{{grupo.tema}}</td>

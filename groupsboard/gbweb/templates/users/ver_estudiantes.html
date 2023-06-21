@@ -1,0 +1,20 @@
+{% extends 'layouts/base_con_login.html' %}
+
+{% block title %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+          
+<h5>{{grupo.nombre}}</h5>
+
+{% for estudiantes in grupo.estudiante.all %}
+
+<h5>{{estudiantes.estudiante.first_name}}</h5>
+
+{% endfor %}
+
+
+
+
+{% endblock %}
