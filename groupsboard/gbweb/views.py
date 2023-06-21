@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 from django.contrib.auth.models import Group
 
 from django.views.generic.list import ListView
+from .forms import CreateUserForm, Create_Task, CreateGroupForm, UserChangeForm
+from .filters import GrupoFiltro
 from .forms import CreateUserForm, Create_Task, CreateGroupForm, UserChangeForm
 from .filters import GrupoFiltro
 
@@ -44,6 +48,7 @@ def sign_in(request):
     context={}
     return render(request, 'login/sign_in.html', context)
 
+
 def logout_user(request):
     logout(request)
     return redirect('sign_in')
@@ -59,6 +64,11 @@ def home(request):
     grupos_totales = grupos.count()
     tareas_totales = tareas.count()
 
+    filtro = GrupoFiltro(request.GET, queryset=grupos)
+    grupos = filtro.qs
+
+    
+    context = {'tareas':tareas, 'grupos':grupos, 'lideres': lideres, 'grupos_totales':grupos_totales, 'tareas_totales': tareas_totales, 'estudiantes':estudiantes, 'filtro':filtro}
     filtro = GrupoFiltro(request.GET, queryset=grupos)
     grupos = filtro.qs
 
@@ -96,7 +106,10 @@ def estudiante(request, id):
 
     filtro = GrupoFiltro(request.GET, queryset=grupos)
     grupos = filtro.qs
+    filtro = GrupoFiltro(request.GET, queryset=grupos)
+    grupos = filtro.qs
 
+    context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count, 'filtro':filtro}
     context ={'estudiante':estudiante, 'grupos':grupos, 'grupos_count': grupos_count, 'filtro':filtro}
     return render(request, 'users/estudiante.html', context)
 
@@ -165,7 +178,9 @@ def create_group(request):
 @login_required(login_url='sign_in')
 def group_detail(request, id):
     grupos = Grupo.objects.get(id=id)
+    grupos = Grupo.objects.get(id=id)
     tareas = Tarea.objects.filter(grupo_id = id)
+
 
 
     context = {'grupos': grupos, 'tareas': tareas}
