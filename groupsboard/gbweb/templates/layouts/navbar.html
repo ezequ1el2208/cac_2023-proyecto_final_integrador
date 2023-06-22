@@ -20,18 +20,6 @@
         </li>
         {% endif %}
         {% if perms.gbweb.add_estudiante %}
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        {% if request.user.is_staff %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'create_group'%}">Crear Grupo</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'account' %}">Usuario</a>
-        </li>
-        {% endif %}
-        {% if perms.gbweb.add_estudiante %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'tasks' %}">Tareas</a>
           </li>
@@ -45,5 +33,4 @@
     <span><a href="{% url 'logout_user' %}">Logout</a></span>
   </div>
   
-
 </nav>

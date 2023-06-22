@@ -1,83 +1,101 @@
 {% extends 'layouts/base_con_login.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <div class="container">
 
-<div class="row">
-    <div class="col-md-5">
-        <h5>Lideres</h5>
-        <hr>
-        <div class="card card-body">
-            <table class="table table-sm">
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Legajo</th>
-                </tr>
-                {% for lider in lideres %}
-                <tr>
-                    <td><a class="btn btn-sm btn-info" href="{% url 'lider' lider.lider.id %}">Ver</a></td>
-                    <td>{{lider.lider.username}}</td>
-                    <td>{{lider.lider.email}}</td>
-                    <td>{{lider.legajo}}</td>
-                </tr>
-                {% endfor %}
-            </table>
+    <div class="row margin-top">
+        <div class="col">
+            <h5>Lideres</h5>
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Legajo</th>
+                    </tr>
+                    {% for lider in lideres %}
+                    <tr>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'lider' lider.lider.id %}">Ver</a></td>
+                        <td>{{lider.lider.username}}</td>
+                        <td>{{lider.lider.email}}</td>
+                        <td>{{lider.legajo}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col">
+            <h5>Estudiantes</h5>
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Legajo</th>
+                    </tr>
+                    {% for estudiante in estudiantes %}
+                    <tr>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'estudiante' estudiante.estudiante.id %}">Ver</a></td>
+                        <td>{{estudiante.estudiante.username}}</td>
+                        <td>{{estudiante.estudiante.email}}</td>
+                        <td>{{estudiante.legajo}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     </div>
-    <div class="col-md">
-        <h5>Estudiantes</h5>
-        <hr>
-        <div class="card card-body">
-            <table class="table table-sm">
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Legajo</th>
-                </tr>
-                {% for estudiante in estudiantes %}
-                <tr>
-                    <td><a class="btn btn-sm btn-info" href="{% url 'estudiante' estudiante.estudiante.id %}">Ver</a></td>
-                    <td>{{estudiante.estudiante.username}}</td>
-                    <td>{{estudiante.estudiante.email}}</td>
-                    <td>{{estudiante.legajo}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-        
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <h5>Grupos</h5>
-        <hr>
-        <div class="card card-body">
-            <table class="table table-sm">
-                <tr>
-                    <th>Grupo</th>
-                    <th>Tipo</th>
-                    <th>Tema</th>
-                    <th>Actualizar</th>
-                    <th>Borrar</th>
-                </tr>
-                {% for grupo in grupos %}
-                <tr>
-                    <td>{{grupo.nombre}}</td>
-                    <td>{{grupo.tipo}}</td>
-                    <td>{{grupo.tema}}</td>
-                    <td><a class="btn btn-sm btn-info" href="">Actualizar</a></td>
-                    <td><a class="btn btn-sm btn-danger" href="">Borrar</a></td> 
-                </tr>
+
+    <div class="row margin-top">
+            <div class="col">
+                <div class="card card-body">
+                    <form method="get">
+                        {{filtro.form}}
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                    </form>
                 
-                {% endfor %}
-            </table>
+                </div>
+            </div>
+    </div>
+
+    <div class="row margin-top margin-bottom">
+        <div class="col">
+            <h5>Grupos</h5>
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Tema</th>
+                        <th>Descripcion</th>
+                        <th>Actualizar</th>
+                        <th>Borrar</th>
+                    </tr>
+                    {% for grupo in grupos %}
+                    <tr>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'group_detail' grupo.id %}">Ver</a></td>
+                        <td>{{grupo.nombre}}</td>
+                        <td>{{grupo.tipo}}</td>
+                        <td>{{grupo.tema}}</td>
+                        <td>{{grupo.descripcion}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_group' grupo.id %}">Actualizar</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_group' grupo.id %}">Borrar</a></td> 
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
 </div>
 
 {% endblock %}
